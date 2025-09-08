@@ -5,6 +5,7 @@
 // @homepageURL https://github.com/haxibami/mustela
 // @supportURL  https://github.com/haxibami/mustela/issues
 // @updateURL   https://github.com/haxibami/mustela/raw/main/mustela.user.js
+// @downloadURL https://github.com/haxibami/mustela/raw/main/mustela.user.js
 // @license     MIT
 // @match       *://*/*
 // @grant       unsafeWindow
