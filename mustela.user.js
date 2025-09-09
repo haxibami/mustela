@@ -9,7 +9,7 @@
 // @license     MIT
 // @match       *://*/*
 // @grant       unsafeWindow
-// @version     0.1.1
+// @version     0.1.2
 // @author      haxibami
 // @description Anti-anti-adblock user script for personal use.
 // @run-at      document-start
@@ -71,10 +71,21 @@
         ) {
           return Reflect.apply(target, thisArg, args);
         }
+
         if (document.currentScript) {
           document.currentScript.innerHTML = noopScript;
         }
       },
     },
   );
+
+  Win.Document.prototype.write = new Proxy(Win.Document.prototype.write, {
+    apply(target, thisArg, args) {
+      if (!args[0].startsWith("<script")) {
+        return Reflect.apply(target, thisArg, args);
+      } else {
+        console.log(target, thisArg, args);
+      }
+    },
+  });
 })();
