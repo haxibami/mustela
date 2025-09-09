@@ -4,14 +4,15 @@
 // @namespace   https://github.com/haxibami/mustela
 // @homepageURL https://github.com/haxibami/mustela
 // @supportURL  https://github.com/haxibami/mustela/issues
-// @updateURL   https://github.com/haxibami/mustela/raw/main/dist/mustela.user.js
-// @downloadURL https://github.com/haxibami/mustela/raw/main/dist/mustela.user.js
+// @updateURL   https://github.com/haxibami/mustela/raw/main/build/mustela.user.js
+// @downloadURL https://github.com/haxibami/mustela/raw/main/build/mustela.user.js
 // @license     MIT
 // @match       *://*/*
 // @grant       unsafeWindow
-// @version     0.1.4
+// @version     0.1.5
 // @author      haxibami
 // @description Anti-anti-adblock user script for personal use.
 // @run-at      document-start
 // ==/UserScript==
-var i=typeof unsafeWindow<"u"?unsafeWindow:window,l=[/pagead2\.googlesyndication\.com/,/securepubads\.g\.doubleclick\.net/,/html-load\.com/];i.XMLHttpRequest=new Proxy(i.XMLHttpRequest,{construct(o,s){let t=new o(...s),r={blockUrl:null};return new Proxy(t,{get(n,e,u){if(e==="open")return(p,c,...m)=>{if(l.some((d)=>d.test(c)))r.blockUrl=c,c="https://nobody.invalid";return n[e].apply(n,[p,c,...m])};if(e==="responseURL")return r.blockUrl||n[e];let a=n[e];return typeof a!=="function"||e==="onreadystatechange"?a:a.bind(n)},set(n,e,u){return n[e]=u,!0}})}});i.Element.prototype.setAttribute=new Proxy(i.Element.prototype.setAttribute,{apply(o,s,t){if(t[0]!=="src"||l.every((r)=>!r.test(t[1])))return Reflect.apply(o,s,t);if(document.currentScript)document.currentScript.innerHTML="(() => { 'use strict'; })();"}});i.Document.prototype.write=new Proxy(i.Document.prototype.write,{apply(o,s,t){if(!t[0].startsWith("<script"))return Reflect.apply(o,s,t);else console.log("Blocked script injection:",t[0])}});
+
+(()=>{var o=typeof unsafeWindow<"u"?unsafeWindow:window,p=[/pagead2\.googlesyndication\.com/,/securepubads\.g\.doubleclick\.net/,/html-load\.com/];o.XMLHttpRequest=new Proxy(o.XMLHttpRequest,{construct(c,i){let e=new c(...i),r={blockUrl:null};return new Proxy(e,{get(n,t,u){if(t==="open")return(d,s,...y)=>{if(p.some((a)=>a.test(s)))r.blockUrl=s,s="https://nobody.invalid";return n[t].apply(n,[d,s,...y])};if(t==="responseURL")return r.blockUrl||n[t];let l=n[t];return typeof l!=="function"||t==="onreadystatechange"?l:l.bind(n)},set(n,t,u){return n[t]=u,!0}})}});o.Element.prototype.setAttribute=new Proxy(o.Element.prototype.setAttribute,{apply(c,i,e){if(e[0]!=="src"||p.every((r)=>!r.test(e[1])))return Reflect.apply(c,i,e);if(document.currentScript)document.currentScript.innerHTML="(() => { 'use strict'; })();"}});o.Document.prototype.write=new Proxy(o.Document.prototype.write,{apply(c,i,e){if(!e[0].startsWith("<script"))return Reflect.apply(c,i,e);else console.log("Blocked script injection:",e[0])}});})();

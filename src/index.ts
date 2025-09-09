@@ -1,20 +1,3 @@
-//! ==UserScript==
-//! @name        Mustela
-//! @encoding    utf-8
-//! @namespace   https://github.com/haxibami/mustela
-//! @homepageURL https://github.com/haxibami/mustela
-//! @supportURL  https://github.com/haxibami/mustela/issues
-//! @updateURL   https://github.com/haxibami/mustela/raw/main/build/mustela.user.js
-//! @downloadURL https://github.com/haxibami/mustela/raw/main/build/mustela.user.js
-//! @license     MIT
-//! @match       *://*/*
-//! @grant       unsafeWindow
-//! @version     0.1.4
-//! @author      haxibami
-//! @description Anti-anti-adblock user script for personal use.
-//! @run-at      document-start
-//! ==/UserScript==
-
 type unsafeWindow = typeof window;
 declare const unsafeWindow: unsafeWindow;
 const Win = typeof unsafeWindow < "u" ? unsafeWindow : window;

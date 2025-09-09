@@ -9,6 +9,6 @@
     "typescript": "^5"
   },
   "scripts": {
-    "build": "bun build src/index.ts --outfile=build/mustela.user.js --minify && bun run util/format.ts"
+    "build": "bun run util/build.ts"
   }
 }
