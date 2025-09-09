@@ -2,9 +2,13 @@
   "name": "mustela",
   "private": true,
   "devDependencies": {
+    "@biomejs/biome": "2.2.2",
     "@types/bun": "latest"
   },
   "peerDependencies": {
     "typescript": "^5"
+  },
+  "scripts": {
+    "build": "bun build src/index.ts --outfile=build/mustela.user.js --minify && bun run util/format.ts"
   }
 }

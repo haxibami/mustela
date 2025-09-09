@@ -1,0 +1,32 @@
+{
+  "$schema": "./node_modules/@biomejs/biome/configuration_schema.json",
+  "assist": { "actions": { "source": { "organizeImports": "on" } } },
+  "files": {
+    "includes": [
+      "**/*.ts",
+      "**/*.js",
+      "**/*.json",
+      "**/*.jsonc",
+      "!node_modules",
+      "!dist"
+    ]
+  },
+  "linter": {
+    "enabled": true,
+    "rules": {
+      "recommended": true,
+      "correctness": {
+        "noUnusedImports": "error"
+      }
+    }
+  },
+  "formatter": {
+    "indentStyle": "space",
+    "indentWidth": 2
+  },
+  "javascript": {
+    "formatter": {
+      "semicolons": "always"
+    }
+  }
+}
