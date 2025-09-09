@@ -2,14 +2,19 @@ type unsafeWindow = typeof window;
 declare const unsafeWindow: unsafeWindow;
 const Win = typeof unsafeWindow < "u" ? unsafeWindow : window;
 
+const OriginalRegExpTest = Win.RegExp.prototype.test;
+
 const blockDomains = [
   /pagead2\.googlesyndication\.com/,
   /securepubads\.g\.doubleclick\.net/,
   /html-load\.com/,
+  /content-loader\.com/,
 ];
 
 const invalidURL = "https://nobody.invalid";
 const noopScript = "(() => { 'use strict'; })();";
+
+console.log("Ad scripts blocker active");
 
 Win.XMLHttpRequest = new Proxy(Win.XMLHttpRequest, {
   construct(target, args: []) {
@@ -24,7 +29,11 @@ Win.XMLHttpRequest = new Proxy(Win.XMLHttpRequest, {
         if (prop === "open") {
           // @ts-expect-error
           return (method: string, url: string, ...rest) => {
-            if (blockDomains.some((pattern) => pattern.test(url))) {
+            if (
+              blockDomains.some((pattern) =>
+                OriginalRegExpTest.call(pattern, url),
+              )
+            ) {
               state.blockUrl = url;
               url = invalidURL;
             }
@@ -55,25 +64,32 @@ Win.Element.prototype.setAttribute = new Proxy(
   {
     apply(target, thisArg, args) {
       if (
-        args[0] !== "src" ||
-        blockDomains.every((pattern) => !pattern.test(args[1]))
+        args[0] === "src" &&
+        blockDomains.some((pattern) =>
+          OriginalRegExpTest.call(pattern, args[1]),
+        )
       ) {
-        return Reflect.apply(target, thisArg, args);
+        args[1] = `data:text/javascript,${encodeURIComponent(noopScript)}`;
       }
-
-      if (document.currentScript) {
-        document.currentScript.innerHTML = noopScript;
-      }
+      return Reflect.apply(target, thisArg, args);
     },
   },
 );
 
-Win.Document.prototype.write = new Proxy(Win.Document.prototype.write, {
-  apply(target, thisArg, args) {
-    if (!args[0].startsWith("<script")) {
-      return Reflect.apply(target, thisArg, args);
-    } else {
-      console.log("Blocked script injection:", args[0]);
-    }
-  },
-});
+const o = (n: string) => {
+  let e = 0;
+  for (let t = 0, r = n.length; t < r; t++) {
+    e = (e << 5) - e + n.charCodeAt(t);
+    e |= 0;
+  }
+  return e;
+};
+
+const a = Date.now();
+const s = a - (a % 86400000);
+const dates = [s, s - 86400000, s + 86400000];
+
+for (const date of dates) {
+  // @ts-expect-error
+  Win[`as_${o(`loader-check_${date}`)}`] = true;
+}

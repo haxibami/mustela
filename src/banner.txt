@@ -9,7 +9,7 @@
 // @license     MIT
 // @match       *://*/*
 // @grant       unsafeWindow
-// @version     0.1.5
+// @version     0.1.6
 // @author      haxibami
 // @description Anti-anti-adblock user script for personal use.
 // @run-at      document-start
