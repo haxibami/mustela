@@ -9,7 +9,7 @@
 // @license     MIT
 // @match       *://*/*
 // @grant       unsafeWindow
-// @version     0.1.0
+// @version     0.1.1
 // @author      haxibami
 // @description Anti-anti-adblock user script for personal use.
 // @run-at      document-start
@@ -71,7 +71,9 @@
         ) {
           return Reflect.apply(target, thisArg, args);
         }
-        document.currentScript.innerHTML = noopScript;
+        if (document.currentScript) {
+          document.currentScript.innerHTML = noopScript;
+        }
       },
     },
   );
