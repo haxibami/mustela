@@ -9,7 +9,7 @@
 // @license     MIT
 // @match       *://*/*
 // @grant       unsafeWindow
-// @version     0.1.2
+// @version     0.1.3
 // @author      haxibami
 // @description Anti-anti-adblock user script for personal use.
 // @run-at      document-start
@@ -17,20 +17,20 @@
 (() => {
   var Win = typeof unsafeWindow < "u" ? unsafeWindow : window;
 
-  const blockDomains = [
+  var blockDomains = [
     /pagead2\.googlesyndication\.com/,
     /securepubads\.g\.doubleclick\.net/,
     /html-load\.com/,
   ];
 
-  const invalidURL = "https://nobody.invalid";
-  const noopScript = "(() => { 'use strict'; })();";
+  var invalidURL = "https://nobody.invalid";
+  var noopScript = "(() => { 'use strict'; })();";
 
   Win.XMLHttpRequest = new Proxy(Win.XMLHttpRequest, {
     construct(target, args) {
-      const xhrInstance = new target(...args);
+      var xhrInstance = new target(...args);
 
-      const state = {
+      var state = {
         blockUrl: null,
       };
 
@@ -48,7 +48,7 @@
           if (prop === "responseURL") {
             return state.blockUrl || target[prop];
           }
-          const value = target[prop];
+          var value = target[prop];
           return typeof value !== "function" || prop === "onreadystatechange"
             ? value
             : value.bind(target);
@@ -84,7 +84,7 @@
       if (!args[0].startsWith("<script")) {
         return Reflect.apply(target, thisArg, args);
       } else {
-        console.log(target, thisArg, args);
+        console.log("Blocked script injection:", args[0]);
       }
     },
   });
